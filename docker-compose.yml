@@ -1,0 +1,40 @@
+version: '3'
+ 
+services:
+    rsshub:
+        image: diygod/rsshub
+        restart: always
+        ports:
+            - '1200:1200'
+        environment:
+            NODE_ENV: production
+            CACHE_TYPE: redis
+            REDIS_URL: 'redis://redis:6379/'
+            PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'
+        depends_on:
+            - redis
+            - browserless
+ 
+    browserless:
+        image: browserless/chrome
+        restart: always
+ 
+    redis:
+        image: redis:alpine
+        restart: always
+        volumes:
+            - redis-data:/data
+ 
+    watchtower:
+        image: containrrr/watchtower
+        container_name: watchtower
+        restart: always
+        environment: 
+            - TZ=Asia/Shanghai
+        volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        command: rsshub_service.rsshub_1 --cleanup --interval 1200
+ 
+ 
+volumes:
+    redis-data:
