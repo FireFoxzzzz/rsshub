@@ -27,7 +27,7 @@ services:
  
     watchtower:
         image: containrrr/watchtower
-        container_name: watchtower_rsshub
+        container_name: watchtower_rsshub_1
         restart: always
         environment: 
             - TZ=Asia/Shanghai
