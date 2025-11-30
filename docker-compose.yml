@@ -59,3 +59,4 @@ services:
             start_period: 5s
 
 volumes:
+    redis-data:
