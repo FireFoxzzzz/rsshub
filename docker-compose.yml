@@ -23,6 +23,8 @@ services:
         depends_on:
             - redis
             - browserless # marked
+        volumes:
+            - /etc/ssl:/etc/ssl:ro
 
     real-browser:
         image: ghcr.io/hyoban/puppeteer-real-browser-hono
