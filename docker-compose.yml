@@ -3,8 +3,8 @@ services:
     image: diygod/rsshub
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
-    env_file:
-      - /etc/rsshub/.env
+    # env_file:
+    #   - /etc/rsshub/.env
     restart: always
     ports:
       - '1200:1200'
