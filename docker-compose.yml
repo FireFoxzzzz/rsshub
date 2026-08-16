@@ -1,6 +1,6 @@
 services:
   rsshub:
-    image: diygod/rsshub
+    image: diygod/rsshub:chromium-bundled
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     # env_file:
@@ -12,47 +12,20 @@ services:
       NODE_ENV: production
       CACHE_TYPE: redis
       REDIS_URL: 'redis://redis:6379/'
-      PUPPETEER_WS_ENDPOINT: 'ws://browserless:3000'
-      PUPPETEER_REAL_BROWSER_SERVICE: 'http://real-browser:3000'
+    mem_limit: 768m
+    memswap_limit: 768m
+    mem_swappiness: 20
+    cpus: 0.8
+    pids_limit: 256
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:1200/healthz']
-      interval: 30s
+      interval: 60s
       timeout: 10s
       retries: 3
     depends_on:
       - redis
-      - browserless
-      - real-browser
     volumes:
       - /etc/ssl:/etc/ssl:ro
-
-  real-browser:
-    image: ghcr.io/hyoban/puppeteer-real-browser-hono
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    restart: always
-    ports:
-      - '3001:3000'
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000']
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  browserless:
-    image: browserless/chrome
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
-    restart: always
-    ulimits:
-      core:
-        hard: 0
-        soft: 0
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3000/pressure']
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
   redis:
     image: redis:alpine
