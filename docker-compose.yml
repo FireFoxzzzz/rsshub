@@ -7,7 +7,7 @@ services:
     #   - /etc/rsshub/.env
     restart: always
     ports:
-      - '1200:1200'
+      - '127.0.0.1:1200:1200'
     environment:
       NODE_ENV: production
       CACHE_TYPE: redis
